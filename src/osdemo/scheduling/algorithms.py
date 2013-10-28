@@ -5,4 +5,7 @@ class FCFS(object):
         self.scheduler = scheduler
 
     def choose_next(self):
-        return self.scheduler.processes[0]
+        try:
+            return self.scheduler.processes[0]
+        except IndexError:
+            return None

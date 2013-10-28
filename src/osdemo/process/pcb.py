@@ -1,7 +1,8 @@
 class PCB(object):
 
-    def __init__(self, program):
+    def __init__(self, program, pid):
         self.program = program
+        self.pid = pid
         self.pc = 0
         self.priority = 0
         self.total_instructions = len(program.instructions)

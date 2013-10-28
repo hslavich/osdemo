@@ -6,6 +6,7 @@ class CPU(threading.Thread):
         threading.Thread.__init__(self)
         self.name = "CPU"
         self.process = None
+        self.ci = None
         self.kernel = kernel
         self.start()
 
@@ -13,25 +14,26 @@ class CPU(threading.Thread):
         self.process = pcb
 
     def _execute_process(self):
-        p = self.process
-        ci = p.current_instruction()
-        self._execute_instruction(ci)
-        p.increment_pc()
-        if p.is_finished():
+        pcb = self.process
+        self.ci = pcb.current_instruction()
+        self._execute_instruction()
+        pcb.increment_pc()
+        if pcb.is_finished():
             self._free()
-            self.kernel.irq("FINISH", p)
+            self.kernel.irq("FINISH", pcb)
 
-    def _execute_instruction(self, i):
-        logging.debug("CPU exec instruction")
+    def _execute_instruction(self):
+        logging.debug("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
         time.sleep(2)
 
     def _free(self):
         self.process = None
+        self.ci = None
 
     def run(self):
         while True:
             if self.process:
                 self._execute_process()
             else:
-                logging.debug("CPU INACTIVA")
+                logging.debug("CPU IDLE")
                 time.sleep(2)
