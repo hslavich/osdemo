@@ -1,4 +1,4 @@
-import threading, time
+import threading, time, logging
 
 class CPU(threading.Thread):
 
@@ -22,7 +22,7 @@ class CPU(threading.Thread):
             self.kernel.irq("FINISH", p)
 
     def _execute_instruction(self, i):
-        print("CPU exec instruction")
+        logging.debug("CPU exec instruction")
         time.sleep(2)
 
     def _free(self):
@@ -33,4 +33,5 @@ class CPU(threading.Thread):
             if self.process:
                 self._execute_process()
             else:
+                logging.debug("CPU INACTIVA")
                 time.sleep(2)
