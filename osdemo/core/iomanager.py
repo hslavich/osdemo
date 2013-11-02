@@ -1,4 +1,4 @@
-from core.ioresource import IOResource
+from osdemo.core.ioresource import IOResource
 
 class IOManager(object):
 

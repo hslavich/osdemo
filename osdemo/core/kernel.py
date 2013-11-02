@@ -1,6 +1,6 @@
-from process.pcb import PCB
-from core.cpu import CPU
-from scheduling.scheduler import Scheduler
+from osdemo.process.pcb import PCB
+from osdemo.core.cpu import CPU
+from osdemo.scheduling.scheduler import Scheduler
 
 class Kernel():
 

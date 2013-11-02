@@ -1,7 +1,7 @@
 import logging
-from core.kernel import Kernel
-from process.program import Program
-from process.instruction import Instruction
+from osdemo.core.kernel import Kernel
+from osdemo.process.program import Program
+from osdemo.process.instruction import Instruction
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s | %(message)s', level=logging.DEBUG)

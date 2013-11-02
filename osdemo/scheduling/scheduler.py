@@ -1,4 +1,4 @@
-from scheduling import algorithms
+from osdemo.scheduling import algorithms
 
 class Scheduler(object):
 
