@@ -4,6 +4,7 @@ class CPU(threading.Thread):
 
     def __init__(self, kernel):
         threading.Thread.__init__(self)
+        self._lock = threading.Condition()
         self.name = "CPU"
         self.process = None
         self.ci = None
@@ -11,7 +12,9 @@ class CPU(threading.Thread):
         self.start()
 
     def assign(self, pcb):
-        self.process = pcb
+        with self._lock:
+            self.process = pcb
+            self._lock.notify()
 
     def _execute_process(self):
         pcb = self.process
@@ -32,8 +35,8 @@ class CPU(threading.Thread):
 
     def run(self):
         while True:
-            if self.process:
+            with self._lock:
+                while not self.process:
+                    logging.debug("CPU IDLE")
+                    self._lock.wait()
                 self._execute_process()
-            else:
-                logging.debug("CPU IDLE")
-                time.sleep(2)
