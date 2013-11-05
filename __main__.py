@@ -1,7 +1,10 @@
-import logging
+import logging, sys
 from osdemo.core.kernel import Kernel
 from osdemo.process.program import Program
 from osdemo.process.instruction import Instruction
+
+sys.path.append('lib/pyshell')
+from pyshell.model.shell import Shell
 
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s | %(message)s', level=logging.DEBUG)

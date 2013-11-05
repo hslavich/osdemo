@@ -1,0 +1,3 @@
+[submodule "lib/pyshell"]
+	path = lib/pyshell
+	url = https://github.com/hslavich/pyshell.git
