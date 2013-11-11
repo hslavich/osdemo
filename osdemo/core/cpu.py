@@ -1,20 +1,15 @@
-import threading, time, logging
+import logging
 
-class CPU(threading.Thread):
+class CPU(object):
 
     def __init__(self, kernel):
-        threading.Thread.__init__(self)
-        self._lock = threading.Condition()
-        self.name = "CPU"
+        super(CPU, self).__init__()
         self.process = None
         self.ci = None
         self.kernel = kernel
-        self.start()
 
     def assign(self, pcb):
-        with self._lock:
-            self.process = pcb
-            self._lock.notify()
+        self.process = pcb
 
     def _execute_process(self):
         pcb = self.process
@@ -27,16 +22,11 @@ class CPU(threading.Thread):
 
     def _execute_instruction(self):
         logging.debug("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
-        time.sleep(2)
 
     def _free(self):
         self.process = None
         self.ci = None
 
-    def run(self):
-        while True:
-            with self._lock:
-                while not self.process:
-                    logging.debug("CPU IDLE")
-                    self._lock.wait()
-                self._execute_process()
+    def fetch(self):
+        if self.process:
+            self._execute_process()

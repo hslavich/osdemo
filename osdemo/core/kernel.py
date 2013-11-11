@@ -1,5 +1,7 @@
 from osdemo.process.pcb import PCB
 from osdemo.core.cpu import CPU
+from osdemo.core.timer import Timer
+from osdemo.core.clock import Clock
 from osdemo.scheduling.scheduler import Scheduler
 
 class Kernel():
@@ -9,6 +11,8 @@ class Kernel():
     def __init__(self):
         self.scheduler = Scheduler()
         self.cpu = CPU(self)
+        self.timer = Timer(self, self.cpu)
+        Clock(self.timer)
 
     def irq(self, type, pcb):
         if type == "FINISH":
