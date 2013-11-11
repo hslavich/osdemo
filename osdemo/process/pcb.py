@@ -7,11 +7,11 @@ class PCB(object):
     IO = 4
     END = 5
 
-    def __init__(self, program, pid):
+    def __init__(self, program, pid, priority = 5):
         self.program = program
         self.pid = pid
         self.pc = 0
-        self.priority = 0
+        self.priority = priority
         self.state = PCB.NEW
         self.total_instructions = len(program.instructions)
 

@@ -22,7 +22,7 @@ class Kernel():
     def _evt_finish(self, pcb):
         self.scheduler.remove_process(pcb)
 
-    def load(self, program):
+    def load(self, program, priority = None):
         pid = self.__class__._pid_count = self.__class__._pid_count + 1
-        pcb = PCB(program, pid)
+        pcb = PCB(program, pid, priority)
         self.irq("CPU", pcb)
