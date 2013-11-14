@@ -1,3 +1,5 @@
+from osdemo.core.clock import Clock
+
 class Timer(object):
 
     def __init__(self, kernel, cpu):
@@ -5,6 +7,7 @@ class Timer(object):
         self.cpu = cpu
         self.quantum = None
         self.kernel = kernel
+        Clock(self)
 
     def tick(self):
         self.cpu.fetch()
