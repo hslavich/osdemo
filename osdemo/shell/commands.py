@@ -34,3 +34,6 @@ class Commands(object):
             priority = None
 
         self._run(name, priority)
+
+    def scheduler(self, args):
+        self.kernel.scheduler.set_algorithm(args[0])
