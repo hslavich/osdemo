@@ -1,3 +1,4 @@
+import logging
 from osdemo.scheduling import algorithms
 
 class Scheduler(object):
@@ -14,3 +15,13 @@ class Scheduler(object):
 
     def get_next(self):
         return self.strategy.choose_next()
+
+    def set_algorithm(self, algo):
+        if algo == "priority":
+            self.strategy = algorithms.Priority(self)
+        elif algo == "FCFS":
+            self.strategy = algorithms.FCFS(self)
+        else:
+            raise Exception("Can't set algorithm %s" % algo)
+        logging.debug("SCHEDULER algorithm set %s" % algo)
+
