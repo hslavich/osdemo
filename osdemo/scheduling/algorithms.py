@@ -43,4 +43,16 @@ class RoundRobin(object):
         except IndexError:
             return None
 
+class RoundRobinPriority(object):
 
+    def __init__(self, scheduler):
+        super(RoundRobinPriority, self).__init__()
+        self.scheduler = scheduler
+        self.quantum = 2
+
+    def choose_next(self):
+        (p, _) = Priority(self.scheduler).choose_next()
+        if p:
+            return (p, self.quantum)
+        else:
+            return None
