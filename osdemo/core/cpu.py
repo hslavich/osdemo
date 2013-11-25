@@ -17,13 +17,13 @@ class CPU(object):
         self._execute_instruction()
         pcb.increment_pc()
         if pcb.is_finished():
-            self._free()
+            self.free()
             self.kernel.irq("FINISH", pcb)
 
     def _execute_instruction(self):
         logging.debug("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
 
-    def _free(self):
+    def free(self):
         self.process = None
         self.ci = None
 
