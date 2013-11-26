@@ -1,4 +1,4 @@
-import logging
+import logging, threading
 
 class CPU(object):
 
@@ -7,9 +7,12 @@ class CPU(object):
         self.process = None
         self.ci = None
         self.kernel = kernel
+        self._lock = threading.Condition()
 
     def assign(self, pcb):
-        self.process = pcb
+        with self._lock:
+            self.process = pcb
+            self._lock.notify()
 
     def _execute_process(self):
         pcb = self.process
@@ -24,9 +27,16 @@ class CPU(object):
         logging.debug("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
 
     def free(self):
-        self.process = None
-        self.ci = None
+        with self._lock:
+            self.process = None
+            self.ci = None
 
     def fetch(self):
-        if self.process:
-            self._execute_process()
+        with self._lock:
+            while not self.process:
+                self._lock.wait()
+            if self.process.current_instruction().type == "IO":
+                self.kernel.irq("IO", self.process)
+            else:
+                self._execute_process()
+
