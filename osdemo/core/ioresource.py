@@ -1,4 +1,4 @@
-import threading, time
+import threading, time, logging
 
 class IOResource(threading.Thread):
 
@@ -7,21 +7,30 @@ class IOResource(threading.Thread):
         self.name = name
         self.process = None
         self.iomanager = iomanager
+        self._lock = threading.Condition()
+        self.start()
 
     def assign(self, process):
-        self.process = process
+        with self._lock:
+            self.process = process
+            self._lock.notify()
 
     def _execute(self):
-        time.sleep(2)
+        logging.debug("IO %s exec PID: %s, INSTR: %s" % (self.name, self.process.pid, self.process.pc))
+        time.sleep(3)
         self.process.increment_pc()
-        self.iomanager.finish_io()
+        self.iomanager.finish_io(self, self.process)
+
+    def is_available(self):
+        return self.process == None
 
     def free(self):
-        self.process = None
+        with self._lock:
+            self.process = None
 
     def run(self):
         while True:
-            if self.process:
+            with self._lock:
+                while not self.process:
+                    self._lock.wait()
                 self._execute()
-            else:
-                time.sleep(2)

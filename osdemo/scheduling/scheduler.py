@@ -5,7 +5,7 @@ class Scheduler(object):
 
     def __init__(self):
         self.processes = []
-        self.strategy = algorithms.RoundRobinPriority(self)
+        self.strategy = algorithms.FCFS(self)
 
     def add_process(self, process):
         self.processes.append(process)

@@ -19,7 +19,7 @@ class PCB(object):
         self.pc += 1
 
     def current_instruction(self):
-        self.program.instructions[self.pc]
+        return self.program.instructions[self.pc]
 
     def is_finished(self):
         return self.pc >= self.total_instructions
