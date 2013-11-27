@@ -24,7 +24,7 @@ class CPU(object):
             self.kernel.irq("FINISH", pcb)
 
     def _execute_instruction(self):
-        logging.debug("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
+        logging.info("CPU exec PID: %s, INSTR: %s" % (self.process.pid, self.process.pc))
 
     def free(self):
         with self._lock:

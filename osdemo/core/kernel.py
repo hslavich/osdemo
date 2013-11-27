@@ -41,7 +41,7 @@ class Kernel():
         self.scheduler.add_process(pcb)
 
     def _evt_finish(self, pcb):
-        logging.debug("KERNEL finish PID: %s" % pcb.pid)
+        logging.info("KERNEL finish PID: %s" % pcb.pid)
         self.scheduler.remove_process(pcb)
 
     def load(self, program, priority = None):

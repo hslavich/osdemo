@@ -16,7 +16,7 @@ class IOResource(threading.Thread):
             self._lock.notify()
 
     def _execute(self):
-        logging.debug("IO %s exec PID: %s, INSTR: %s" % (self.name, self.process.pid, self.process.pc))
+        logging.info("IO %s exec PID: %s, INSTR: %s" % (self.name, self.process.pid, self.process.pc))
         time.sleep(3)
         self.process.increment_pc()
         self.iomanager.finish_io(self, self.process)
