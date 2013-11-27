@@ -19,8 +19,7 @@ class Timer(object):
             self.kernel.irq("TIMEOUT", p)
 
     def tick(self):
+        self.cpu.fetch()
         self._decrease_quantum()
-        if self.quantum != None and self.quantum < 0:
+        if self.quantum != None and self.quantum == 0:
             self._return_process()
-        else:
-            self.cpu.fetch()
