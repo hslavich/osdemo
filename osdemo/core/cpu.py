@@ -2,11 +2,12 @@ import logging, threading
 
 class CPU(object):
 
-    def __init__(self, kernel):
+    def __init__(self, kernel, memory):
         super(CPU, self).__init__()
         self.process = None
         self.ci = None
         self.kernel = kernel
+        self.memory = memory
         self._lock = threading.Condition()
 
     def assign(self, pcb):
@@ -16,7 +17,7 @@ class CPU(object):
 
     def _execute_process(self):
         pcb = self.process
-        self.ci = pcb.current_instruction()
+        self.ci = self.memory.readInstruction(pcb)
         self._execute_instruction()
         pcb.increment_pc()
         if pcb.is_finished():

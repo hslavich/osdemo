@@ -4,6 +4,8 @@ from osdemo.core.timer import Timer
 from osdemo.core.iomanager import IOManager
 from osdemo.core.irqmanager import IRQManager
 from osdemo.scheduling.scheduler import Scheduler
+from osdemo.memory.memory import Memory
+from osdemo.memory.continuous import ContinuousAssignment
 import logging
 
 class Kernel():
@@ -12,7 +14,8 @@ class Kernel():
 
     def __init__(self):
         self.scheduler = Scheduler()
-        self.cpu = CPU(self)
+        self.memory = Memory(ContinuousAssignment())
+        self.cpu = CPU(self, self.memory)
         self.timer = Timer(self, self.cpu)
         self.io_manager = IOManager(self)
         self.irq_manager = IRQManager(self)
@@ -43,8 +46,10 @@ class Kernel():
     def _evt_finish(self, pcb):
         logging.info("KERNEL finish PID: %s" % pcb.pid)
         self.scheduler.remove_process(pcb)
+        self.memory.unload(pcb)
 
     def load(self, program, priority = None):
         pid = self.__class__._pid_count = self.__class__._pid_count + 1
         pcb = PCB(program, pid, priority)
+        self.memory.load(pcb)
         self.irq("READY", pcb)
