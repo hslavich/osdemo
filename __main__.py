@@ -13,5 +13,6 @@ if __name__ == '__main__':
     shell = Shell()
     shell.addCommand("load", Commands(k).load)
     shell.addCommand("scheduler", Commands(k).scheduler)
+    shell.addCommand("memory", Commands(k).memory)
     ShellFrame(shell).start()
 
