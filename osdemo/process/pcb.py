@@ -14,6 +14,8 @@ class PCB(object):
         self.priority = priority
         self.state = PCB.NEW
         self.total_instructions = len(program.instructions)
+        self.size = self.total_instructions
+        self.base = None
 
     def increment_pc(self):
         self.pc += 1
