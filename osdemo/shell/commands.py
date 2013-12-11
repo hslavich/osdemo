@@ -37,3 +37,6 @@ class Commands(object):
 
     def scheduler(self, args):
         self.kernel.scheduler.set_algorithm(args[0])
+
+    def memory(self, args):
+        print(self.kernel.memory)

@@ -30,7 +30,7 @@ class ContinuousAssignment(object):
     def _merge(self):
         new_blocks = [self.blocks[0]]
         for i in range(1, len(self.blocks)):
-            prev = self.blocks[i - 1]
+            prev = new_blocks[-1]
             curr = self.blocks[i]
             if not prev.pcb and not curr.pcb:
                 prev.expand(curr.size)

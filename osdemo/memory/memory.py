@@ -21,4 +21,4 @@ class Memory(object):
 
     def __str__(self):
         with self._lock:
-            return ' '.join(map(str, self.blocks))
+            return str(self.manager)
