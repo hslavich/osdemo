@@ -54,5 +54,8 @@ class Kernel():
     def load(self, program, priority = None):
         pid = self.__class__._pid_count = self.__class__._pid_count + 1
         pcb = PCB(program, pid, priority)
-        self.memory.load(pcb)
-        self.irq("READY", pcb)
+        try:
+            self.memory.load(pcb)
+            self.irq("READY", pcb)
+        except Exception:
+            logging.error("No memory available")

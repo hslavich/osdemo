@@ -1,3 +1,4 @@
+import logging
 from osdemo.memory.block import Block
 from osdemo.memory import allocation
 
@@ -10,7 +11,7 @@ class ContinuousAssignment(object):
         self.allocation = allocation.FirstFit(self)
 
     def load(self, pcb):
-        block = self.allocation.get_block(pcb.size)
+        block = self._try_get_block(pcb.size)
         self._assign_pcb(pcb, block)
         new_block = block.compact()
         if new_block and new_block.size:
@@ -26,6 +27,14 @@ class ContinuousAssignment(object):
 
     def readInstruction(self, pcb):
         return pcb.current_instruction()
+
+    def _try_get_block(self, size):
+        try:
+            return self.allocation.get_block(size)
+        except Exception:
+            self._compact()
+        return self.allocation.get_block(size)
+
 
     def _merge(self):
         new_blocks = [self.blocks[0]]
@@ -43,6 +52,7 @@ class ContinuousAssignment(object):
         pcb.base = block
 
     def _compact(self):
+        logging.info("MEMORY compacting")
         free_blocks = []
         used_blocks = []
         for block in self.blocks:
