@@ -32,8 +32,11 @@ class Kernel():
 
     def _evt_timeout(self, pcb):
         self.cpu.free()
-        self.scheduler.remove_process(pcb)
-        self.scheduler.add_process(pcb)
+        try:
+            self.scheduler.remove_process(pcb)
+            self.scheduler.add_process(pcb)
+        except ValueError:
+            pass
 
     def _evt_io(self, pcb):
         self.cpu.free()
